@@ -43,24 +43,44 @@ const products = [
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+// Fungsi untuk menangani pencarian dan filter
+function filterProducts() {
+  const searchQuery = document.getElementById("search").value.toLowerCase();
+  const conditionFilter = document.getElementById("condition-filter").value;
+
+  // Filter produk berdasarkan pencarian dan kondisi
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery);
+    const matchesCondition =
+      conditionFilter === "" || product.condition === conditionFilter;
+
+    return matchesSearch && matchesCondition;
+  });
+
+  renderProducts(filteredProducts);
+}
+
 // Render Produk ke Halaman
 function renderProducts(productList) {
   const productContainer = document.getElementById("product-list");
   productContainer.innerHTML = "";
 
+  if (productList.length === 0) {
+    productContainer.innerHTML = "<p>Produk tidak ditemukan.</p>"; // Tampilkan pesan jika tidak ada produk yang cocok
+    return;
+  }
+
   productList.forEach((product) => {
     const productElement = document.createElement("div");
     productElement.classList.add("product");
     productElement.innerHTML = `
-          <img src="${product.image}" alt="${product.name}">
-          <h3>${product.name}</h3>
-          <p>Kondisi: ${product.condition}</p>
-          <p>Lokasi: ${product.location}</p>
-          <p>Harga: Rp ${product.price.toLocaleString()}</p>
-          <button onclick="addToCart(${
-            product.id
-          })">Tambah ke Keranjang</button>
-        `;
+        <img src="${product.image}" alt="${product.name}">
+        <h3>${product.name}</h3>
+        <p>Kondisi: ${product.condition}</p>
+        <p>Lokasi: ${product.location}</p>
+        <p>Harga: Rp ${product.price.toLocaleString()}</p>
+        <button onclick="addToCart(${product.id})">Tambah ke Keranjang</button>
+      `;
     productContainer.appendChild(productElement);
   });
 }
@@ -77,13 +97,13 @@ function renderCart() {
       const cartElement = document.createElement("div");
       cartElement.classList.add("cart-item");
       cartElement.innerHTML = `
-            <img src="${item.image}" alt="${item.name}">
-            <h3>${item.name}</h3>
-            <p>Kondisi: ${item.condition}</p>
-            <p>Lokasi: ${item.location}</p>
-            <p>Harga: Rp ${item.price.toLocaleString()}</p>
-            <button onclick="confirmRemoveFromCart(${index})">Hapus</button>
-          `;
+          <img src="${item.image}" alt="${item.name}">
+          <h3>${item.name}</h3>
+          <p>Kondisi: ${item.condition}</p>
+          <p>Lokasi: ${item.location}</p>
+          <p>Harga: Rp ${item.price.toLocaleString()}</p>
+          <button onclick="confirmRemoveFromCart(${index})">Hapus</button>
+        `;
       cartContainer.appendChild(cartElement);
     });
   }
@@ -154,6 +174,12 @@ function openCart() {
 function closeCart() {
   document.getElementById("cart-modal").style.display = "none";
 }
+
+// Event listener untuk pencarian dan filter
+document.getElementById("search").addEventListener("input", filterProducts);
+document
+  .getElementById("condition-filter")
+  .addEventListener("change", filterProducts);
 
 // Load Produk dan Keranjang
 window.onload = function () {
