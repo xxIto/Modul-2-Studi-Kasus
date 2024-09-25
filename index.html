@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Barang Elektronik Bekas</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Toko Elektronik Bekas</h1>
+        <!-- Keranjang Ikon -->
+        <div id="cart-icon" onclick="openCart()">
+            🛒 Keranjang (<span id="cart-count">0</span>)
+        </div>
+    </header>
+
+    <!-- Container untuk seluruh produk -->
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="search" placeholder="Cari barang...">
+            <select id="condition-filter">
+                <option value="">Semua Kondisi</option>
+                <option value="baru">Baru</option>
+                <option value="bekas">Bekas</option>
+                <option value="refurbished">Refurbished</option>
+            </select>
+        </div>
+
+        <div id="product-list">
+            <!-- Daftar barang elektronik akan ditampilkan di sini -->
+        </div>
+    </div>
+
+    <!-- Modal untuk Keranjang -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>Keranjang Belanja</h2>
+            <div id="cart-list">
+                <!-- Barang yang ditambahkan ke keranjang akan ditampilkan di sini -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="assets/javascript/script.js"></script>
+</body>
+
+</html>
